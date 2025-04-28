@@ -1,12 +1,62 @@
 import { AdvancedImage } from "cloudinary-react-native";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { cld } from "../lib/cloudinary";
 import PostContent from "./PostContent";
 import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { useEffect, useRef, useState } from "react";
+import { AuthType, useAuth } from "../global/useAuth";
+import { supabase } from "../lib/supabase";
 
-const PostList = ({ post }: any) => {
+const PostList = ({ post, openSheet }: any) => {
   let avatar = cld.image(post.user.avatar_url);
-  console.log(JSON.stringify(post, null, 2));
+  // console.log(JSON.stringify(post, null, 2));
+  const likeCountRef = useRef(post.likes?.[0]?.count);
+  const { auth } = useAuth() as AuthType;
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeRecord, setLikeRecord] = useState<{ id: string } | null>(null);
+
+  useEffect(() => {
+    if (post.my_likes.length > 0) {
+      setLikeRecord(post.my_likes[0]);
+      setIsLiked(true);
+    }
+  }, [post.my_likes]);
+
+  useEffect(() => {
+    if (isLiked) {
+      saveLike();
+    } else {
+      deleteLike();
+    }
+  }, [isLiked]);
+  const saveLike = async () => {
+    if (likeRecord) {
+      return;
+    }
+    const { data } = await supabase
+      .from("likes")
+      .insert([
+        {
+          user_id: auth.user?.id,
+          post_id: post.id,
+        },
+      ])
+      .select();
+    if (data) {
+      setLikeRecord(data[0]);
+    }
+  };
+  const deleteLike = async () => {
+    if (likeRecord) {
+      const { error } = await supabase
+        .from("likes")
+        .delete()
+        .eq("id", likeRecord.id);
+      if (!error) {
+        setLikeRecord(null);
+      }
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
@@ -62,8 +112,30 @@ const PostList = ({ post }: any) => {
             gap: 7,
           }}
         >
-          <AntDesign name={"hearto"} size={20} color={"black"} />
-          <Ionicons name="chatbubble-outline" size={20} color={"black"} />
+          <TouchableOpacity
+            onPress={() => {
+              if (!isLiked) {
+                likeCountRef.current += 1;
+                setIsLiked(true);
+              } else {
+                likeCountRef.current -= 1;
+                setIsLiked(false);
+              }
+            }}
+          >
+            <AntDesign
+              name={isLiked ? "heart" : "hearto"}
+              size={20}
+              color={isLiked ? "crimson" : "black"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              openSheet();
+            }}
+          >
+            <Ionicons name="chatbubble-outline" size={20} color={"black"} />
+          </TouchableOpacity>
           <Feather name="send" size={20} color={"black"} />
         </View>
         <Feather
@@ -77,7 +149,7 @@ const PostList = ({ post }: any) => {
         style={{ flexDirection: "row", marginTop: 5, gap: 1, marginBlock: 10 }}
       >
         <Text style={{ fontWeight: "semibold", marginLeft: 7, color: "black" }}>
-          Likes 0
+          Likes {likeCountRef.current || 0}
         </Text>
         <Text style={{ fontWeight: "semibold", marginLeft: 7, color: "black" }}>
           Comments 0
