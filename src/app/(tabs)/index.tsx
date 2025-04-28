@@ -8,6 +8,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CommentList from "~/src/components/CommentList";
 import CommentInput from "~/src/components/CommentInput";
+import { useCommentsStore } from "~/src/global/useComments";
 
 export default function Home() {
   const [posts, setPosts] = useState<any[] | null>([]);
@@ -15,6 +16,7 @@ export default function Home() {
   const isMounted = useRef(false);
   const { auth } = useAuth() as AuthType;
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const comments = useCommentsStore((state) => state.comments);
   const openSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);

@@ -2,6 +2,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useCallback, useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
+import { useCommentsStore } from "../global/useComments";
 
 const BottomSheetComponent = ({
   bottomSheetRef,
@@ -13,10 +14,12 @@ const BottomSheetComponent = ({
   const snapPoints = useMemo(() => [minIndex, maxIndex], []);
   const handleSheetChange = useCallback((index: number) => {
     if (index === -1) {
+      useCommentsStore.getState().clearComments();
       bottomSheetRef.current?.close();
     }
   }, []);
   const handleClosePress = () => {
+    useCommentsStore.getState().clearComments();
     bottomSheetRef.current?.close();
   };
 

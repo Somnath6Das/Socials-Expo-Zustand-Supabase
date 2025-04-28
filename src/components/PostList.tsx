@@ -6,6 +6,8 @@ import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import { AuthType, useAuth } from "../global/useAuth";
 import { supabase } from "../lib/supabase";
+import { PostIdType, usePostId } from "../global/usePostId";
+import { fetchComments } from "../func/fetchComments";
 
 const PostList = ({ post, openSheet }: any) => {
   let avatar = cld.image(post.user.avatar_url);
@@ -14,7 +16,9 @@ const PostList = ({ post, openSheet }: any) => {
   const { auth } = useAuth() as AuthType;
   const [isLiked, setIsLiked] = useState(false);
   const [likeRecord, setLikeRecord] = useState<{ id: string } | null>(null);
-
+  const { setPostId } = usePostId() as PostIdType;
+  const [commentCount, setCommentCount] = useState<number | null>(null);
+  const isMounted = useRef(false);
   useEffect(() => {
     if (post.my_likes.length > 0) {
       setLikeRecord(post.my_likes[0]);
@@ -57,6 +61,20 @@ const PostList = ({ post, openSheet }: any) => {
       }
     }
   };
+  const commentByPostId = () => {
+    fetchComments(post.id).then(({ data, count, error }) => {
+      setCommentCount(count);
+    });
+  };
+  useEffect(() => {
+    isMounted.current = true;
+    if (isMounted.current) {
+      commentByPostId();
+    }
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <View
@@ -131,6 +149,8 @@ const PostList = ({ post, openSheet }: any) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
+              setPostId(post.id);
+              commentByPostId();
               openSheet();
             }}
           >
@@ -152,7 +172,7 @@ const PostList = ({ post, openSheet }: any) => {
           Likes {likeCountRef.current || 0}
         </Text>
         <Text style={{ fontWeight: "semibold", marginLeft: 7, color: "black" }}>
-          Comments 0
+          Comments {commentCount?.toString()}
         </Text>
       </View>
     </View>
