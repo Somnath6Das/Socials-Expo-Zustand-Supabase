@@ -2,8 +2,10 @@ import { AdvancedImage } from "cloudinary-react-native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { cld } from "../lib/cloudinary";
+import { useTheme } from "../theme/ThemeProvider";
 
 const CommentList = ({ comment }: any) => {
+  const theme = useTheme();
   let avatar = cld.image(comment.user.avatar_url);
   // console.log(comment);
   return (
@@ -39,10 +41,12 @@ const CommentList = ({ comment }: any) => {
             )}
           </TouchableOpacity>
           <View style={{ gap: 3 }}>
-            <Text style={{ fontSize: 15, fontWeight: "500", color: "black" }}>
+            <Text
+              style={{ fontSize: 15, fontWeight: "500", color: theme.text }}
+            >
               {comment.user.username || "Unknown"}
             </Text>
-            <Text style={{ color: "black" }}>{comment.comment}</Text>
+            <Text style={{ color: theme.text }}>{comment.comment}</Text>
           </View>
         </View>
       </View>

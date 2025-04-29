@@ -5,6 +5,7 @@ import CustomButton from "~/src/components/CustomButton";
 import InputField from "~/src/components/InputField";
 import { EmailType, useEmail } from "~/src/global/useEmail";
 import { supabase } from "~/src/lib/supabase";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function SetPassword() {
   const { email, otp } = useEmail() as EmailType;
@@ -13,7 +14,7 @@ export default function SetPassword() {
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
-
+  const theme = useTheme();
   const setPassword = async () => {
     if (!pass.password && !pass.confirmPassword) {
       Alert.alert("Please set the Password and Confirm Password");
@@ -57,6 +58,16 @@ export default function SetPassword() {
             marginBottom: 35,
           }}
         />
+        <Text
+          style={{
+            alignSelf: "center",
+            fontSize: 22,
+            marginBottom: 18,
+            color: theme.text,
+          }}
+        >
+          Set Password
+        </Text>
         <View style={{ width: "100%", alignItems: "center", gap: 10 }}>
           <InputField
             title="Password"

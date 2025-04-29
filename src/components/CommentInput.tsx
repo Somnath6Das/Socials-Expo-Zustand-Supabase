@@ -1,4 +1,10 @@
-import { Alert, Image, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Image,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { AuthType, useAuth } from "../global/useAuth";
 import { supabase } from "../lib/supabase";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +15,7 @@ import { TextInput } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import { fetchComments } from "../func/fetchComments";
 import { PostIdType, usePostId } from "../global/usePostId";
+import { useTheme } from "../theme/ThemeProvider";
 
 const CommentInput = () => {
   const { auth } = useAuth() as AuthType;
@@ -18,6 +25,7 @@ const CommentInput = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const { postId } = usePostId() as PostIdType;
+  const theme = useTheme();
 
   const getProfile = async () => {
     if (!auth.user?.id) {
@@ -55,6 +63,7 @@ const CommentInput = () => {
       let postidCmt = data[0]?.post_id;
       fetchComments(postidCmt);
     }
+    setLoading(false);
   };
   let remoteCldImage = cld.image(avatar);
   remoteCldImage.resize(thumbnail().width(300).height(300));
@@ -73,7 +82,7 @@ const CommentInput = () => {
         height: 45,
         margin: 12,
         borderWidth: 2,
-        borderColor: "blue",
+        borderColor: theme.primary,
         padding: 10,
         borderRadius: 10,
         flexDirection: "row",
@@ -99,11 +108,11 @@ const CommentInput = () => {
       )}
       <TextInput
         style={{
-          color: "black",
+          color: theme.text,
         }}
         onChangeText={setText}
         placeholder={`Comment as ${username}`}
-        placeholderTextColor={"black"}
+        placeholderTextColor={theme.text}
         value={text}
         keyboardType="default"
       />
@@ -112,7 +121,15 @@ const CommentInput = () => {
         onPress={makeComment}
         disabled={loading}
       >
-        <Ionicons name="send" size={20} color={"blue"} />
+        {loading ? (
+          <ActivityIndicator
+            size="small"
+            color={theme.primary}
+            style={{ alignSelf: "center" }}
+          />
+        ) : (
+          <Ionicons name="send" size={20} color={theme.primary} />
+        )}
       </TouchableOpacity>
     </View>
   );

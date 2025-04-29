@@ -1,8 +1,10 @@
 import { Redirect, Stack } from "expo-router";
 import { AuthType, useAuth } from "~/src/global/useAuth";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Layout() {
   const { auth } = useAuth() as AuthType;
+  const theme = useTheme();
   if (auth.isAuthenticated) {
     return <Redirect href="/(tabs)" />;
   }
@@ -10,6 +12,9 @@ export default function Layout() {
     <Stack
       screenOptions={{
         headerShown: false,
+        contentStyle: {
+          backgroundColor: theme.background,
+        },
       }}
     >
       <Stack.Screen name="index" />

@@ -5,9 +5,11 @@ import { OtpInput } from "react-native-otp-entry";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "~/src/components/CustomButton";
 import { EmailType, useEmail } from "~/src/global/useEmail";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function SetOtp() {
   const { otp, setOtp } = useEmail() as EmailType;
+  const theme = useTheme();
   const otpVerify = () => {
     if (otp.length === 6) {
       router.push("/set_password");
@@ -34,7 +36,7 @@ export default function SetOtp() {
             marginBottom: 35,
           }}
         />
-        <Text style={{ fontSize: 22, alignSelf: "center" }}>
+        <Text style={{ fontSize: 22, alignSelf: "center", color: theme.text }}>
           Please give your otp.
         </Text>
         <View style={{ width: "100%", alignItems: "center" }}>
@@ -42,7 +44,7 @@ export default function SetOtp() {
             style={{ fontSize: 19, marginBottom: 14, color: "black" }}
           ></Text>
           <OtpInput
-            focusColor={"blue"}
+            focusColor={theme.primary}
             type="numeric"
             numberOfDigits={6}
             onTextChange={(text) => setOtp(text)}
@@ -56,9 +58,9 @@ export default function SetOtp() {
                 width: 10,
                 marginVertical: 40,
               },
-              pinCodeTextStyle: { color: "blue" },
-              focusStickStyle: { borderColor: "blue" },
-              pinCodeContainerStyle: { backgroundColor: "white" },
+              pinCodeTextStyle: { color: theme.primary },
+              focusStickStyle: { borderColor: theme.primary },
+              pinCodeContainerStyle: { backgroundColor: theme.cardback },
             }}
           />
           <CustomButton title="Sign up" onPress={() => otpVerify()} />

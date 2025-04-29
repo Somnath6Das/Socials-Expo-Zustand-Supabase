@@ -6,11 +6,13 @@ import CustomButton from "~/src/components/CustomButton";
 import InputField from "~/src/components/InputField";
 import { EmailType, useEmail } from "~/src/global/useEmail";
 import { supabase } from "~/src/lib/supabase";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function SetEmail() {
   const { heading } = useLocalSearchParams();
   const { email, setEmail } = useEmail() as EmailType;
   const [loading, setloading] = useState(false);
+  const theme = useTheme();
   const emailVerify = async () => {
     setloading(true);
     if (!email) {
@@ -51,7 +53,7 @@ export default function SetEmail() {
             alignSelf: "center",
             marginVertical: 20,
             fontSize: 19,
-            color: "black",
+            color: theme.text,
           }}
         >
           {heading}

@@ -6,6 +6,7 @@ import CustomButton from "~/src/components/CustomButton";
 import InputField from "~/src/components/InputField";
 import { AuthType, useAuth } from "~/src/global/useAuth";
 import { supabase } from "~/src/lib/supabase";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Login() {
   const [form, setForm] = useState({
@@ -15,6 +16,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [errorInfo, setErrorInfo] = useState(true);
   const { auth, updateAuth } = useAuth() as AuthType;
+  const theme = useTheme();
 
   const signInWithEmail = async () => {
     setLoading(true);
@@ -52,7 +54,9 @@ export default function Login() {
           }}
         />
         <View style={{ width: "100%", alignItems: "center", gap: 10 }}>
-          <Text style={{ fontSize: 22 }}>Login to Socials</Text>
+          <Text style={{ fontSize: 22, color: theme.text }}>
+            Login to Socials
+          </Text>
           <InputField
             title="Email"
             value={form.email}
@@ -82,10 +86,13 @@ export default function Login() {
             marginTop: 20,
           }}
         >
-          <Text style={{ fontSize: 16, color: "black" }}>
+          <Text style={{ fontSize: 16, color: theme.text }}>
             Don't have an account ?
           </Text>
-          <Link href="verify_email?heading=Sign up for new profile">
+          <Link
+            href="verify_email?heading=Sign up for new profile"
+            style={{ fontSize: 16, color: theme.primary, fontWeight: "700" }}
+          >
             Sign up
           </Link>
         </View>
@@ -98,7 +105,9 @@ export default function Login() {
             }
             style={{ alignItems: "center", marginTop: 8 }}
           >
-            <Text style={{ fontSize: 16 }}>Forget Password</Text>
+            <Text style={{ fontSize: 16, color: theme.text }}>
+              Forget Password
+            </Text>
           </TouchableOpacity>
         )}
       </ScrollView>
