@@ -63,6 +63,14 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="index" />
+          <Stack.Screen
+            name="profile_model"
+            options={{
+              presentation: "transparentModal",
+              animation: "fade",
+              headerShown: false,
+            }}
+          />
         </Stack>
       </ThemeProvider>
     </NetworkAware>

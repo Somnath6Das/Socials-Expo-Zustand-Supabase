@@ -9,6 +9,7 @@ import { supabase } from "../lib/supabase";
 import { PostIdType, usePostId } from "../global/usePostId";
 import { fetchComments } from "../func/fetchComments";
 import { useTheme } from "../theme/ThemeProvider";
+import { router } from "expo-router";
 
 const PostList = ({ post, openSheet }: any) => {
   let avatar = cld.image(post.user.avatar_url);
@@ -89,19 +90,23 @@ const PostList = ({ post, openSheet }: any) => {
           marginBottom: 16,
         }}
       >
-        {post.user.avatar_url ? (
-          <AdvancedImage
-            cldImg={avatar}
-            style={{
-              width: 47,
-              height: 47,
-              aspectRatio: 1,
-              borderRadius: 50,
-            }}
-          />
-        ) : (
-          <Image source={require("~/assets/images/user.png")} />
-        )}
+        <TouchableOpacity
+          onPress={() => router.push(`/profile_model?postId=${post.id}`)}
+        >
+          {post.user.avatar_url ? (
+            <AdvancedImage
+              cldImg={avatar}
+              style={{
+                width: 47,
+                height: 47,
+                aspectRatio: 1,
+                borderRadius: 50,
+              }}
+            />
+          ) : (
+            <Image source={require("~/assets/images/user.png")} />
+          )}
+        </TouchableOpacity>
         <View style={{ flexDirection: "column", gap: 2 }}>
           <Text style={{ fontSize: 16, color: theme.text }}>
             {post.user.username || "unknown"}

@@ -3,6 +3,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { cld } from "../lib/cloudinary";
 import { useTheme } from "../theme/ThemeProvider";
+import { router } from "expo-router";
 
 const CommentList = ({ comment }: any) => {
   const theme = useTheme();
@@ -25,7 +26,11 @@ const CommentList = ({ comment }: any) => {
             gap: 10,
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              router.push(`/profile_model?userId=${comment.user.id}`)
+            }
+          >
             {comment.user.avatar_url ? (
               <AdvancedImage
                 cldImg={avatar}
