@@ -20,6 +20,7 @@ import { AuthType, useAuth } from "~/src/global/useAuth";
 import { cld, uploadImage } from "~/src/lib/cloudinary";
 import { thumbnail } from "@cloudinary/url-gen/actions/resize";
 import { AdvancedImage } from "cloudinary-react-native";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Profile() {
   const [username, setUsername] = useState("");
@@ -30,7 +31,7 @@ export default function Profile() {
   const { auth } = useAuth() as AuthType;
   const [remoteImage, setRemoteImage] = useState<string | null>(null);
   const isMounted = useRef(false);
-
+  const theme = useTheme();
   const openSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
@@ -101,12 +102,12 @@ export default function Profile() {
     remoteCldImage.resize(thumbnail().width(300).height(300));
   }
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: theme.background }}>
       <TouchableOpacity
         onPress={openSheet}
         style={{ alignItems: "flex-end", marginRight: 15, marginTop: 15 }}
       >
-        <Ionicons name="settings-sharp" size={26} color={"black"} />
+        <Ionicons name="settings-sharp" size={26} color={theme.text} />
       </TouchableOpacity>
       <View style={{ alignItems: "center", marginTop: "10%" }}>
         {image ? (
@@ -116,8 +117,8 @@ export default function Profile() {
               width: 150,
               height: 150,
               borderRadius: "50%",
-              backgroundColor: "grey",
-              borderColor: "blue",
+              backgroundColor: theme.content,
+              borderColor: theme.text,
               borderWidth: 4,
             }}
           />
@@ -128,8 +129,8 @@ export default function Profile() {
               width: 150,
               height: 150,
               borderRadius: "50%",
-              backgroundColor: "grey",
-              borderColor: "blue",
+              backgroundColor: theme.content,
+              borderColor: theme.text,
               borderWidth: 4,
             }}
           />
@@ -140,8 +141,8 @@ export default function Profile() {
               width: 150,
               height: 150,
               borderRadius: "50%",
-              backgroundColor: "grey",
-              borderColor: "blue",
+              backgroundColor: theme.content,
+              borderColor: theme.text,
               borderWidth: 4,
             }}
           />
@@ -149,7 +150,7 @@ export default function Profile() {
         <TouchableOpacity onPress={pickImage}>
           <Text
             style={{
-              color: "black",
+              color: theme.text,
               fontWeight: "600",
               marginVertical: 10,
               fontSize: 16,

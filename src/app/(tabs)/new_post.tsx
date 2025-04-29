@@ -9,9 +9,11 @@ import { uploadImage } from "~/src/lib/cloudinary";
 import { supabase } from "~/src/lib/supabase";
 import { AuthType, useAuth } from "~/src/global/useAuth";
 import { router } from "expo-router";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function NewPost() {
   const [media, setMedia] = useState<string | null>("");
+  const theme = useTheme();
   const [mediaType, setMediaType] = useState<
     "video" | "image" | "livePhoto" | "pairedVideo" | undefined
   >();
@@ -61,7 +63,7 @@ export default function NewPost() {
         flex: 1,
         alignItems: "center",
         padding: 2,
-        backgroundColor: "white",
+        backgroundColor: theme.background,
       }}
     >
       {!media ? (
@@ -70,7 +72,7 @@ export default function NewPost() {
             width: 150,
             aspectRatio: 3 / 4,
             borderRadius: 10,
-            backgroundColor: "grey",
+            backgroundColor: theme.content,
           }}
         />
       ) : mediaType === "image" ? (
@@ -97,7 +99,7 @@ export default function NewPost() {
             fontWeight: "500",
             fontSize: 16,
             margin: 8,
-            color: "black",
+            color: theme.text,
           }}
         >
           Change

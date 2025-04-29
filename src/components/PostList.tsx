@@ -8,10 +8,12 @@ import { AuthType, useAuth } from "../global/useAuth";
 import { supabase } from "../lib/supabase";
 import { PostIdType, usePostId } from "../global/usePostId";
 import { fetchComments } from "../func/fetchComments";
+import { useTheme } from "../theme/ThemeProvider";
 
 const PostList = ({ post, openSheet }: any) => {
   let avatar = cld.image(post.user.avatar_url);
   // console.log(JSON.stringify(post, null, 2));
+  const theme = useTheme();
   const likeCountRef = useRef(post.likes?.[0]?.count);
   const { auth } = useAuth() as AuthType;
   const [isLiked, setIsLiked] = useState(false);
@@ -76,7 +78,7 @@ const PostList = ({ post, openSheet }: any) => {
     };
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.cardfore }}>
       <View
         style={{
           flexDirection: "row",
@@ -101,13 +103,17 @@ const PostList = ({ post, openSheet }: any) => {
           <Image source={require("~/assets/images/user.png")} />
         )}
         <View style={{ flexDirection: "column", gap: 2 }}>
-          <Text style={{ fontSize: 16, color: "black" }}>
+          <Text style={{ fontSize: 16, color: theme.text }}>
             {post.user.username || "unknown"}
           </Text>
           {post.caption && (
             <View>
               <Text
-                style={{ fontWeight: "semibold", fontSize: 16, color: "black" }}
+                style={{
+                  fontWeight: "semibold",
+                  fontSize: 16,
+                  color: theme.text,
+                }}
               >
                 {post.caption}
               </Text>
@@ -144,7 +150,7 @@ const PostList = ({ post, openSheet }: any) => {
             <AntDesign
               name={isLiked ? "heart" : "hearto"}
               size={20}
-              color={isLiked ? "crimson" : "black"}
+              color={isLiked ? "crimson" : theme.text}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -154,24 +160,28 @@ const PostList = ({ post, openSheet }: any) => {
               openSheet();
             }}
           >
-            <Ionicons name="chatbubble-outline" size={20} color={"black"} />
+            <Ionicons name="chatbubble-outline" size={20} color={theme.text} />
           </TouchableOpacity>
-          <Feather name="send" size={20} color={"black"} />
+          <Feather name="send" size={20} color={theme.text} />
         </View>
         <Feather
           name="bookmark"
           size={20}
           style={{ marginRight: 10 }}
-          color={"black"}
+          color={theme.text}
         />
       </View>
       <View
         style={{ flexDirection: "row", marginTop: 5, gap: 1, marginBlock: 10 }}
       >
-        <Text style={{ fontWeight: "semibold", marginLeft: 7, color: "black" }}>
+        <Text
+          style={{ fontWeight: "semibold", marginLeft: 7, color: theme.text }}
+        >
           Likes {likeCountRef.current || 0}
         </Text>
-        <Text style={{ fontWeight: "semibold", marginLeft: 7, color: "black" }}>
+        <Text
+          style={{ fontWeight: "semibold", marginLeft: 7, color: theme.text }}
+        >
           Comments {commentCount?.toString()}
         </Text>
       </View>

@@ -3,6 +3,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { useCallback, useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { useCommentsStore } from "../global/useComments";
+import { useTheme } from "../theme/ThemeProvider";
 
 const BottomSheetComponent = ({
   bottomSheetRef,
@@ -12,6 +13,7 @@ const BottomSheetComponent = ({
   commentInput = null,
 }: any) => {
   const snapPoints = useMemo(() => [minIndex, maxIndex], []);
+  const theme = useTheme();
   const handleSheetChange = useCallback((index: number) => {
     if (index === -1) {
       useCommentsStore.getState().clearComments();
@@ -30,20 +32,20 @@ const BottomSheetComponent = ({
       ref={bottomSheetRef}
       onChange={handleSheetChange}
       enablePanDownToClose={true}
-      backgroundStyle={{ backgroundColor: "white" }}
-      handleIndicatorStyle={{ backgroundColor: "black" }}
+      backgroundStyle={{ backgroundColor: theme.cardback }}
+      handleIndicatorStyle={{ backgroundColor: theme.text }}
     >
       <BottomSheetView
         style={{
           flex: 1,
-          backgroundColor: "white",
+          backgroundColor: theme.cardback,
         }}
       >
         <TouchableOpacity
           onPress={handleClosePress}
           style={{ alignItems: "flex-end", marginRight: 20 }}
         >
-          <FontAwesome name="close" size={20} color={"black"} />
+          <FontAwesome name="close" size={20} color={theme.text} />
         </TouchableOpacity>
         <View style={{ flex: 1, justifyContent: "space-between" }}>
           {ViewModel}

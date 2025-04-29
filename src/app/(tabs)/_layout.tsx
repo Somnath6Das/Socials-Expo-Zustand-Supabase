@@ -7,9 +7,11 @@ import { Redirect, Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthType, useAuth } from "~/src/global/useAuth";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Layout() {
   const { auth } = useAuth() as AuthType;
+  const theme = useTheme();
   if (!auth.isAuthenticated) {
     return <Redirect href="/(auth)" />;
   }
@@ -19,13 +21,13 @@ export default function Layout() {
         screenOptions={{
           tabBarShowLabel: false,
           headerTitleAlign: "center",
-          headerTintColor: "black",
+          headerTintColor: theme.primary,
           headerStyle: {
             elevation: 0,
-            backgroundColor: "white",
+            backgroundColor: theme.background,
           },
           tabBarStyle: {
-            backgroundColor: "white",
+            backgroundColor: theme.background,
           },
         }}
       >
@@ -37,7 +39,7 @@ export default function Layout() {
               <MaterialCommunityIcons
                 name="home-circle"
                 size={focused ? 30 : 25}
-                color={focused ? "blue" : "grey"}
+                color={focused ? theme.primary : theme.text}
               />
             ),
           }}
@@ -50,7 +52,7 @@ export default function Layout() {
               <FontAwesome
                 name="plus-circle"
                 size={focused ? 30 : 25}
-                color={focused ? "blue" : "grey"}
+                color={focused ? theme.primary : theme.text}
               />
             ),
           }}
@@ -63,7 +65,7 @@ export default function Layout() {
               <FontAwesome
                 name="user-circle-o"
                 size={focused ? 28 : 23}
-                color={focused ? "blue" : "grey"}
+                color={focused ? theme.primary : theme.text}
               />
             ),
           }}

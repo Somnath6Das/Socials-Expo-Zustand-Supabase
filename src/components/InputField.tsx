@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTheme } from "../theme/ThemeProvider";
 type FormField = {
   title: string;
   value: string;
@@ -27,9 +28,10 @@ const InputField = ({
   numberOfLines = 1,
 }: FormField) => {
   const [showPassword, setShowPassword] = useState(false);
+  const theme = useTheme();
   return (
     <View style={{ width: "90%", gap: 7 }}>
-      <Text style={{ color: "black", fontSize: 18 }}>{title}</Text>
+      <Text style={{ color: theme.text, fontSize: 18 }}>{title}</Text>
       <View
         style={{
           flexDirection: "row",
@@ -37,8 +39,8 @@ const InputField = ({
           height: 64,
           justifyContent: "space-between",
           paddingHorizontal: 16,
-          backgroundColor: "white",
-          borderColor: "blue",
+          backgroundColor: theme.content,
+          borderColor: theme.text,
           borderWidth: 2,
           paddingVertical: 10,
           borderRadius: 10,
@@ -46,7 +48,7 @@ const InputField = ({
       >
         <TextInput
           style={{
-            color: "black",
+            color: theme.text,
             textAlignVertical: "center",
             fontSize: 18,
             height: 35,
@@ -54,7 +56,7 @@ const InputField = ({
           }}
           value={value}
           placeholder={placeholder}
-          placeholderTextColor={"black"}
+          placeholderTextColor={theme.text}
           onChangeText={handleChangeText}
           secureTextEntry={title === "Password" && !showPassword}
           keyboardType={keyboardType}
@@ -67,9 +69,9 @@ const InputField = ({
             onPress={() => setShowPassword(!showPassword)}
           >
             {!showPassword ? (
-              <Feather name="eye" size={24} color="black" />
+              <Feather name="eye" size={24} color={theme.text} />
             ) : (
-              <Feather name="eye-off" size={24} color="black" />
+              <Feather name="eye-off" size={24} color={theme.text} />
             )}
           </TouchableOpacity>
         )}

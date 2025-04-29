@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CommentList from "~/src/components/CommentList";
 import CommentInput from "~/src/components/CommentInput";
 import { useCommentsStore } from "~/src/global/useComments";
+import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Home() {
   const [posts, setPosts] = useState<any[] | null>([]);
@@ -17,6 +18,7 @@ export default function Home() {
   const { auth } = useAuth() as AuthType;
   const bottomSheetRef = useRef<BottomSheet>(null);
   const comments = useCommentsStore((state) => state.comments);
+  const theme = useTheme();
   const openSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
   }, []);
@@ -43,7 +45,7 @@ export default function Home() {
     };
   }, []);
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: theme.cardback }}>
       <FlatList
         data={posts}
         renderItem={({ item }: any) => (
@@ -84,9 +86,9 @@ export default function Home() {
                 <MaterialCommunityIcons
                   name="comment"
                   size={50}
-                  color={"black"}
+                  color={theme.text}
                 />
-                <Text style={{ color: "black" }}>No Comments yet</Text>
+                <Text style={{ color: theme.text }}>No Comments yet</Text>
               </View>
             }
             onRefresh={fetchPosts}
