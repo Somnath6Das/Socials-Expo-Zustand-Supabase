@@ -1,8 +1,10 @@
 import { Stack } from "expo-router";
-import { AppState } from "react-native";
+import { ActivityIndicator, AppState, View } from "react-native";
 import { supabase } from "../lib/supabase";
 import { useEffect, useRef } from "react";
 import { AuthType, useAuth } from "../global/useAuth";
+import NetworkAware from "../components/NetworkAware";
+import { ThemeProvider } from "../theme/ThemeProvider";
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -39,13 +41,30 @@ export default function RootLayout() {
       isMounted.current = false;
     };
   }, []);
+  if (!auth.isReady) {
+    return (
+      <View style={{ flex: 1 }}>
+        <NetworkAware>
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <ActivityIndicator size={"large"} color={"green"} />
+          </View>
+        </NetworkAware>
+      </View>
+    );
+  }
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="index" />
-    </Stack>
+    <NetworkAware>
+      <ThemeProvider>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="index" />
+        </Stack>
+      </ThemeProvider>
+    </NetworkAware>
   );
 }
