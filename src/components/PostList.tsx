@@ -10,6 +10,7 @@ import { PostIdType, usePostId } from "../global/usePostId";
 import { fetchComments } from "../func/fetchComments";
 import { useTheme } from "../theme/ThemeProvider";
 import { router } from "expo-router";
+import { sendLikeNotification } from "../notification/like_notification";
 
 const PostList = ({ post, openSheet }: any) => {
   let avatar = cld.image(post.user.avatar_url);
@@ -50,6 +51,7 @@ const PostList = ({ post, openSheet }: any) => {
       ])
       .select();
     if (data) {
+      sendLikeNotification(data[0]);
       setLikeRecord(data[0]);
     }
   };

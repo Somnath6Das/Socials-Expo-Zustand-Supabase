@@ -1,10 +1,14 @@
+import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
 import { ActivityIndicator, AppState, View } from "react-native";
 import { supabase } from "../lib/supabase";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { AuthType, useAuth } from "../global/useAuth";
 import NetworkAware from "../components/NetworkAware";
-import { ThemeProvider } from "../theme/ThemeProvider";
+import { ThemeProvider, useTheme } from "../theme/ThemeProvider";
+
+// splash screen
+SplashScreen.preventAutoHideAsync();
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -15,8 +19,15 @@ AppState.addEventListener("change", (state) => {
 });
 
 export default function RootLayout() {
+  // splash screen
+  const onLayoutSplash = useCallback(() => {
+    SplashScreen.hideAsync();
+  }, []);
+
   const { auth, updateAuth } = useAuth() as AuthType;
   const isMounted = useRef(false);
+  const theme = useTheme();
+
   useEffect(() => {
     isMounted.current = true;
     if (isMounted.current) {
@@ -43,7 +54,10 @@ export default function RootLayout() {
   }, []);
   if (!auth.isReady) {
     return (
-      <View style={{ flex: 1 }}>
+      <View
+        style={{ flex: 1, backgroundColor: theme.background }}
+        onLayout={onLayoutSplash}
+      >
         <NetworkAware>
           <View
             style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
@@ -55,24 +69,26 @@ export default function RootLayout() {
     );
   }
   return (
-    <NetworkAware>
-      <ThemeProvider>
-        <Stack
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="index" />
-          <Stack.Screen
-            name="profile_model"
-            options={{
-              presentation: "transparentModal",
-              animation: "fade",
+    <View style={{ flex: 1 }} onLayout={onLayoutSplash}>
+      <NetworkAware>
+        <ThemeProvider>
+          <Stack
+            screenOptions={{
               headerShown: false,
             }}
-          />
-        </Stack>
-      </ThemeProvider>
-    </NetworkAware>
+          >
+            <Stack.Screen name="index" />
+            <Stack.Screen
+              name="profile_model"
+              options={{
+                presentation: "transparentModal",
+                animation: "fade",
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </ThemeProvider>
+      </NetworkAware>
+    </View>
   );
 }
