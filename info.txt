@@ -1,0 +1,162 @@
+//? superbase docs
+https://supabase.com/docs/guides/getting-started/tutorials/with-expo-react-native
+
+// need dependency
+npx expo install @supabase/supabase-js @react-native-async-storage/async-storage
+
+// create new project.
+
+// api key get path
+// click project > project settings > Data API > URL, anon public.
+
+// create auth table
+// SQL Editor (option on left sidebar) > Quick starts > User Management Starter > run.
+
+// First Time Sign up otp mail config:
+// Authentication (option on left sidebar) > Emails > Confirm signup > write code > save.
+
+// Forget password to reset password get otp config:
+// Authentication (option on left sidebar) > Emails > Magic Link > write code > save.
+
+// expo image picker
+npx expo install expo-image-picker
+//app.json
+"plugins": [
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
+
+// Cloudinary docs
+https://cloudinary.com/documentation/react_native_integration#landingpage
+
+npm i cloudinary-react-native
+
+// need to create a preset
+// cloudinary setting > upload > Create Preset (Unsign Preset)
+
+
+
+
+
+
+// groham bottom sheet config in babel.config.js
+ return {
+ plugins: ["react-native-reanimated/plugin"],}
+
+ // netInfo for ios app.json
+npm i @react-native-community/netinfo
+"ios": {
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": true
+      },}
+
+
+
+// app icon chage 
+https://www.figma.com/community/file/1466490409418563617
+
+
+// notification icon 96px X 96px
+// create here https://convert-my-image.com/ImageConverter#google_vignette
+// inside app.json
+"expo": {
+  "notification": {
+      "icon": "./assets/icons/notification-icon.png",
+      "color": "#ffffff"
+    },
+}
+
+
+// local apk build
+// eas.json
+"build":{
+  "production": {
+      "android": {
+        "buildType": "apk"
+      }
+    }
+}
+
+eas build --profile production --platform android --local
+
+
+
+// run build emulator
+npx expo run:android
+npx expo run:ios
+
+
+
+// gradlew clean
+cd android && ./gradlew clean
+
+// after prebuild app icon change.
+// remove native android and ios folder
+rm -rf ios/
+rm -rf android/
+git clean -xdf
+npm install
+npx expo prebuild --clean
+// need to check package name on app level gradle
+android {
+    namespace "com.somnathdas.Socialx"
+    defaultConfig {
+        applicationId "com.somnathdas.Socialx"
+    }
+}
+
+
+
+//? Push Notification
+https://docs.expo.dev/push-notifications/push-notifications-setup/
+
+eas init
+// download and paste firebase json file in android/app folder
+
+// get android and iOS folder.
+npx expo prebuild
+
+// app.json mention firebase file
+"android": {
+"googleServicesFile": "./android/app/google-services.json"
+}
+
+
+// project level build.gradle
+dependencies {
+classpath('com.google.gms:google-services:4.3.15')
+}
+
+// app level build.gradle
+apply plugin: 'com.google.gms.google-services'
+
+
+// download private key file from firebase
+project settings > service accounts > Generate new private key
+// upload this key file to
+expo.dev > configuration > credentials > FCM V1 service account key
+
+
+
+// eas build
+
+npm install -g eas-cli
+eas login
+eas whoami
+eas init
+eas update:configure
+eas build:configure
+
+// every changes on app.json need to run prebuild 
+// get package name
+npx expo prebuild
+
+// web build
+eas build --profile preview
+// web update 
+eas update --branch preview --platform android  --message "complete"

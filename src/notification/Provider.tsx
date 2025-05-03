@@ -18,9 +18,10 @@ export default function NotificationProvider({ children }: any) {
   const notificationListener = useRef<Notifications.EventSubscription>();
   const { auth } = useAuth() as AuthType;
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token ?? "")
-    );
+    registerForPushNotificationsAsync()
+      .then((token) => setExpoPushToken(token ?? ""))
+      .catch((error: any) => setExpoPushToken(`${error}`));
+
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
         //!message will get here

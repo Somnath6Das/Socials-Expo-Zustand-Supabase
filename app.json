@@ -6,7 +6,7 @@
     "scheme": "coding-ideas-socials",
     "orientation": "portrait",
     "icon": "./assets/icons/ios-light.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "notification": {
       "icon": "./assets/icons/notification.png",
@@ -21,14 +21,18 @@
         "dark": "./assets/icons/ios-dark.png",
         "light": "./assets/icons/ios-light.png",
         "tinted": "./assets/icons/ios-tinted.png"
-      }
+      },
+      "bundleIdentifier": "com.somnathdas.Socials"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icons/adaptive-icon.png",
         "monochromeImage": "./assets/icons/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.somnathdas.Socials",
+      "googleServicesFile": "./android/app/google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -55,7 +59,21 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-video"
-    ]
+      "expo-video",
+      "expo-font"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a92e6ff7-70aa-46b3-beb5-4c8a896aa45b"
+      }
+    },
+    "owner": "somnathdas",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/a92e6ff7-70aa-46b3-beb5-4c8a896aa45b"
+    }
   }
 }

@@ -5,7 +5,7 @@ export async function sendCommentNotification(comment: any) {
     .from("comments")
     .select("*, posts(*, profiles(*))")
     .eq("id", comment.id)
-    .select();
+    .single();
 
   const pushToken = data?.posts?.profiles?.push_token;
   if (!pushToken) {

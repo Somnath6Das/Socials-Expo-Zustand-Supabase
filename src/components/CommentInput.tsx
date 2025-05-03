@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { fetchComments } from "../func/fetchComments";
 import { PostIdType, usePostId } from "../global/usePostId";
 import { useTheme } from "../theme/ThemeProvider";
+import { sendCommentNotification } from "../notification/comment_notification";
 
 const CommentInput = () => {
   const { auth } = useAuth() as AuthType;
@@ -62,6 +63,7 @@ const CommentInput = () => {
     if (data) {
       let postidCmt = data[0]?.post_id;
       fetchComments(postidCmt);
+      sendCommentNotification(data[0]);
     }
     setLoading(false);
   };

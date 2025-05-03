@@ -23,6 +23,7 @@ import { AdvancedImage } from "cloudinary-react-native";
 import { useTheme } from "~/src/theme/ThemeProvider";
 
 export default function Profile() {
+  const isMounted = useRef(false);
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,7 @@ export default function Profile() {
   const [image, setImage] = useState<string | undefined>("");
   const { auth } = useAuth() as AuthType;
   const [remoteImage, setRemoteImage] = useState<string | null>(null);
-  const isMounted = useRef(false);
+
   const theme = useTheme();
   const openSheet = useCallback(() => {
     bottomSheetRef.current?.expand();
@@ -109,14 +110,14 @@ export default function Profile() {
       >
         <Ionicons name="settings-sharp" size={26} color={theme.text} />
       </TouchableOpacity>
-      <View style={{ alignItems: "center", marginTop: "10%" }}>
+      <View style={{ flex: 1, alignItems: "center", marginTop: "10%" }}>
         {image ? (
           <Image
             source={{ uri: image }}
             style={{
               width: 150,
               height: 150,
-              borderRadius: "50%",
+              borderRadius: 50,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
@@ -128,7 +129,7 @@ export default function Profile() {
             style={{
               width: 150,
               height: 150,
-              borderRadius: "50%",
+              borderRadius: 50,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
@@ -140,7 +141,7 @@ export default function Profile() {
             style={{
               width: 150,
               height: 150,
-              borderRadius: "50%",
+              borderRadius: 50,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
@@ -184,12 +185,14 @@ export default function Profile() {
               setBio(e);
             }}
             keyboardType="default"
+            multiline
+            numberOfLines={3}
           />
         </View>
         <View
           style={{
             alignItems: "center",
-            marginTop: "7%",
+            marginTop: "auto",
             marginBottom: 30,
             width: "90%",
           }}

@@ -5,7 +5,7 @@ export async function sendLikeNotification(like: any) {
     .from("likes")
     .select("*, posts(*, profiles(*))")
     .eq("id", like.id)
-    .select();
+    .single();
 
   const pushToken = data?.posts?.profiles?.push_token;
   if (!pushToken) {

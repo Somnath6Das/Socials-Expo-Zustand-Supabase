@@ -73,7 +73,10 @@ export default function Layout() {
             }}
           />
         </Tabs>
-        <StatusBar backgroundColor="white" style={"light"} />
+        <StatusBar
+          backgroundColor={theme.background}
+          style={theme.background === "#212121" ? "light" : "dark"}
+        />
       </GestureHandlerRootView>
     </NotificationProvider>
   );
