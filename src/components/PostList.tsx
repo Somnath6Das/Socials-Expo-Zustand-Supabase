@@ -106,7 +106,15 @@ const PostList = ({ post, openSheet }: any) => {
               }}
             />
           ) : (
-            <Image source={require("~/assets/images/user.png")} />
+            <Image
+              source={require("~/assets/images/user.png")}
+              style={{
+                width: 47,
+                height: 47,
+                aspectRatio: 1,
+                borderRadius: 50,
+              }}
+            />
           )}
         </TouchableOpacity>
         <View style={{ flexDirection: "column", gap: 2 }}>

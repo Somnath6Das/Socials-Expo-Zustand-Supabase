@@ -117,7 +117,7 @@ export default function Profile() {
             style={{
               width: 150,
               height: 150,
-              borderRadius: 50,
+              borderRadius: 100,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
@@ -129,7 +129,7 @@ export default function Profile() {
             style={{
               width: 150,
               height: 150,
-              borderRadius: 50,
+              borderRadius: 100,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
@@ -141,7 +141,7 @@ export default function Profile() {
             style={{
               width: 150,
               height: 150,
-              borderRadius: 50,
+              borderRadius: 100,
               backgroundColor: theme.content,
               borderColor: theme.text,
               borderWidth: 4,
