@@ -1,5 +1,11 @@
 import { Entypo, Ionicons } from "@expo/vector-icons";
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { supabase } from "../lib/supabase";
 import { useTheme } from "../theme/ThemeProvider";
 import { useState } from "react";
@@ -13,6 +19,7 @@ const ColorModeSettings = () => {
     setIsDarkTheme((prev) => !prev);
     isDarkTheme ? setTheme("light") : setTheme("dark");
   };
+  const [loading, setLoading] = useState(false);
   const theme = useTheme();
   return (
     <View
@@ -87,7 +94,11 @@ const ColorModeSettings = () => {
         </Pressable>
       </View>
       <Pressable
-        onPress={() => supabase.auth.signOut()}
+        onPress={() => {
+          setLoading(true);
+          supabase.auth.signOut();
+          setLoading(false);
+        }}
         style={{
           width: "100%",
           borderRadius: 8,
@@ -98,25 +109,38 @@ const ColorModeSettings = () => {
           justifyContent: "flex-start",
         }}
       >
-        <Ionicons
-          name="log-out-outline"
-          size={30}
-          style={{
-            marginLeft: 18,
-            alignSelf: "center",
-          }}
-          color={theme.text}
-        />
-        <Text
-          style={{
-            fontSize: 20,
-            alignSelf: "center",
-            color: theme.text,
-            marginLeft: 113,
-          }}
-        >
-          Log out
-        </Text>
+        {loading ? (
+          <ActivityIndicator
+            size="small"
+            color="white"
+            style={{
+              alignSelf: "center",
+              marginLeft: 113,
+            }}
+          />
+        ) : (
+          <>
+            <Ionicons
+              name="log-out-outline"
+              size={30}
+              style={{
+                marginLeft: 18,
+                alignSelf: "center",
+              }}
+              color={theme.text}
+            />
+            <Text
+              style={{
+                fontSize: 20,
+                alignSelf: "center",
+                color: theme.text,
+                marginLeft: 113,
+              }}
+            >
+              Log out
+            </Text>
+          </>
+        )}
       </Pressable>
     </View>
   );

@@ -40,7 +40,7 @@ const InputField = ({
           justifyContent: "space-between",
           paddingHorizontal: 16,
           backgroundColor: theme.content,
-          borderColor: theme.text,
+          borderColor: theme.primary,
           borderWidth: 2,
           paddingVertical: 10,
           borderRadius: 10,

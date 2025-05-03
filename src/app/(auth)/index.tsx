@@ -1,6 +1,13 @@
 import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "~/src/components/CustomButton";
 import InputField from "~/src/components/InputField";
@@ -14,7 +21,7 @@ export default function Login() {
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [errorInfo, setErrorInfo] = useState(true);
+  const [errorInfo, setErrorInfo] = useState(false);
   const { auth, updateAuth } = useAuth() as AuthType;
   const theme = useTheme();
 
@@ -33,6 +40,11 @@ export default function Login() {
       user: session?.user,
       isAuthenticated: !!session?.user,
     });
+    if (!session || error) {
+      Alert.alert("wrong credentials! Try forget password.");
+    }
+    setErrorInfo(error?.status === 400);
+    setLoading(false);
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
