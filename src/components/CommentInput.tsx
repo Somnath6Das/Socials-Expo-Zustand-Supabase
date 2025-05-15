@@ -36,13 +36,13 @@ const CommentInput = () => {
       .from("profiles")
       .select("*")
       .eq("id", auth.user.id)
-      .select();
+      .single();
     if (error) {
       Alert.alert("Faild to fetch profile");
     }
     if (data) {
-      setAvatar(data[0]?.avatar_url || null);
-      setUsername(data[0]?.username || null);
+      setAvatar(data.avatar_url);
+      setUsername(data.username);
     }
     setText("");
   };
